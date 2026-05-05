@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mini-Projets UML Entreprise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#0f0f23;color:#e0e0e0;line-height:1.6}
+.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px}
+.card{background:rgba(20,20,40,0.95);border:1px solid rgba(100,100,200,0.3);border-radius:16px;padding:40px;max-width:1000px;width:100%;box-shadow:0 0 40px rgba(100,100,255,0.1)}
+h1{font-size:2.2em;background:linear-gradient(90deg,#00d4ff,#7b2cbf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:10px}
+h2{font-size:1.6em;color:#00d4ff;margin-bottom:20px;border-left:4px solid #7b2cbf;padding-left:15px}
+h3{font-size:1.2em;color:#a855f7;margin:20px 0 10px 0}
+.subtitle{text-align:center;color:#888;font-size:1.1em;margin-bottom:25px}
+.scenario-box{background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(123,44,191,0.1));border:1px solid rgba(0,212,255,0.3);border-radius:12px;padding:20px;margin:20px 0}
+.scenario-box h3{color:#00d4ff;margin:0 0 10px 0}
+.role-badge{display:inline-block;background:linear-gradient(135deg,#7b2cbf,#a855f7);color:white;padding:6px 16px;border-radius:20px;font-size:0.85em;font-weight:bold;margin:5px}
+.company-card{background:rgba(30,30,60,0.8);border:1px solid rgba(0,212,255,0.2);border-radius:12px;padding:25px;margin:15px 0;transition:all 0.3s}
+.company-card:hover{border-color:#00d4ff;box-shadow:0 0 20px rgba(0,212,255,0.15);transform:translateY(-3px)}
+.company-header{display:flex;align-items:center;gap:15px;margin-bottom:15px}
+.company-icon{font-size:2.5em}
+.company-name{font-size:1.4em;font-weight:bold;color:#00d4ff}
+.company-sector{color:#888;font-size:0.9em}
+.deliverable-tag{display:inline-block;background:rgba(34,197,94,0.2);color:#22c55e;border:1px solid rgba(34,197,94,0.4);padding:4px 12px;border-radius:15px;font-size:0.8em;margin:3px}
+.code-box{background:#0a0a1a;border:1px solid rgba(100,100,200,0.3);border-radius:10px;padding:18px;font-family:'Courier New',monospace;font-size:0.82em;overflow-x:auto;margin:12px 0;color:#cdd6f4}
+.code-box .comment{color:#6c7086}
+.code-box .keyword{color:#f38ba8}
+.code-box .class-name{color:#89b4fa;font-weight:bold}
+table{width:100%;border-collapse:collapse;margin:15px 0;border-radius:10px;overflow:hidden;font-size:0.9em}
+th{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#00d4ff;padding:12px;text-align:left;font-weight:600}
+td{padding:10px 12px;border-bottom:1px solid rgba(100,100,200,0.2)}
+tr:nth-child(even){background:rgba(30,30,60,0.5)}
+tr:hover{background:rgba(50,50,100,0.5)}
+.btn{display:inline-block;background:linear-gradient(135deg,#7b2cbf,#a855f7);color:white;padding:12px 28px;border-radius:25px;text-decoration:none;font-weight:bold;margin:8px;transition:all 0.3s;border:none;cursor:pointer;font-size:0.95em}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(123,44,191,0.4)}
+.nav-dots{position:fixed;right:15px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:100}
+.nav-dot{width:10px;height:10px;border-radius:50%;background:rgba(100,100,200,0.4);cursor:pointer;transition:all 0.3s}
+.nav-dot:hover,.nav-dot.active{background:#00d4ff;box-shadow:0 0 10px #00d4ff;transform:scale(1.3)}
+.slide-number{position:absolute;bottom:15px;right:25px;color:rgba(100,100,200,0.5);font-size:0.85em}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}h1{font-size:1.6em}h2{font-size:1.3em}.card{padding:20px}}
+.emoji{font-size:2.5em;text-align:center;margin:10px 0}
+.hint-box{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:10px;padding:15px;margin:10px 0}
+.hint-box strong{color:#fbbf24}
+.solution-box{display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:10px;padding:15px;margin-top:10px}
+.solution-box.show{display:block}
+.toggle-sol{background:rgba(34,197,94,0.2);color:#22c55e;border:1px solid rgba(34,197,94,0.4);padding:8px 20px;border-radius:20px;cursor:pointer;margin-top:10px;transition:all 0.3s}
+.toggle-sol:hover{background:rgba(34,197,94,0.3)}
+.step-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#7b2cbf,#a855f7);color:white;border-radius:50%;font-weight:bold;margin-right:10px;font-size:0.9em}
+.actor-card{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);border-radius:10px;padding:15px;text-align:center}
+.actor-card .emoji{font-size:2em;margin:5px 0}
+.actor-card .name{font-weight:bold;color:#00d4ff}
+.actor-card .desc{font-size:0.85em;color:#888}
+</style>
+</head>
+<body>
+
+<div class="slide" id="slide1">
+<div class="card" style="text-align:center;">
+<div class="emoji">🏢</div>
+<h1 style="font-size:2.8em;">Mini-Projets UML</h1>
+<p class="subtitle" style="font-size:1.2em;">Modelisation en entreprise : Tu es l employe, resous le probleme !</p>
+<div style="margin:25px 0;">
+<span class="role-badge">Diagramme de Classes</span>
+<span class="role-badge">Cas d Utilisation</span>
+<span class="role-badge">Diagramme de Sequence</span>
+</div>
+<p style="color:#888;margin-top:20px;">5 entreprises reelles - 5 problemes concrets - 5 missions a accomplir</p>
+<div style="margin-top:30px;">
+<a href="#slide2" class="btn">Commencer la mission →</a>
+</div>
+</div>
+<div class="slide-number">1 / 14</div>
+</div>
+
+<div class="slide" id="slide2">
+<div class="card">
+<h2>🎮 Comment ca marche ?</h2>
+<div class="scenario-box">
+<h3>Tu es embauche(e) dans une entreprise en tant que...</h3>
+<p style="margin-top:10px;">Chaque projet te place dans la peau d un employe qui doit modeliser une solution UML pour resoudre un probleme concret de l entreprise.</p>
+</div>
+<div style="margin:20px 0;">
+<div style="display:flex;align-items:center;margin:12px 0;">
+<span class="step-number">1</span>
+<div><strong>Lis le scenario</strong> - Comprends le probleme de l entreprise</div>
+</div>
+<div style="display:flex;align-items:center;margin:12px 0;">
+<span class="step-number">2</span>
+<div><strong>Identifie les acteurs</strong> - Qui interagit avec le systeme ?</div>
+</div>
+<div style="display:flex;align-items:center;margin:12px 0;">
+<span class="step-number">3</span>
+<div><strong>Modelise en UML</strong> - Classes, Cas d utilisation, Sequence</div>
+</div>
+<div style="display:flex;align-items:center;margin:12px 0;">
+<span class="step-number">4</span>
+<div><strong>Verifie ta solution</strong> - Compare avec le corrige</div>
+</div>
+</div>
+<div class="hint-box">
+<strong>💡 Conseil :</strong> Pour chaque projet, tu dois produire <strong>3 diagrammes</strong> :<br>
+- <strong>Diagramme de Classes</strong> : La structure des donnees<br>
+- <strong>Diagramme de Cas d Utilisation</strong> : Les fonctionnalites du systeme<br>
+- <strong>Diagramme de Sequence</strong> : Les interactions dans le temps
+</div>
+</div>
+<div class="slide-number">2 / 14</div>
+</div>
+
+<div class="slide" id="slide3">
+<div class="card">
+<div class="company-header">
+<div class="company-icon">🍽️</div>
+<div>
+<div class="company-name">BistroTech</div>
+<div class="company-sector">Chaine de restaurants - Restauration rapide</div>
+</div>
+</div>
+<div class="scenario-box">
+<h3>🎭 Ton role : Developpeur Analyste</h3>
+<p>Tu viens d etre embauche(e) chez <strong>BistroTech</strong>, une chaine de 15 restaurants. Le PDG veut un systeme informatique pour gerer les commandes en ligne. Actuellement, tout se fait sur papier et c est le chaos !</p>
+</div>
+<h3>📋 Le probleme</h3>
+<ul style="margin:10px 0 10px 25px;">
+<li>Les clients appellent pour commander, le serveur note sur papier</li>
+<li>Les commandes se perdent en cuisine</li>
+<li>On ne sait pas quel client a commande quoi</li>
+<li>Impossible de suivre les ventes par restaurant</li>
+<li>Le client ne peut pas suivre sa commande en temps reel</li>
+</ul>
+<h3>🎯 Livrables attendus</h3>
+<div>
+<span class="deliverable-tag">Diagramme de Classes</span>
+<span class="deliverable-tag">Cas d Utilisation</span>
+<span class="deliverable-tag">Diagramme de Sequence</span>
+</div>
+<h3>👥 Acteurs identifies</h3>
+<div class="grid-3">
+<div class="actor-card">
+<div class="emoji">👤</div>
+<div class="name">Client</div>
+<div class="desc">Passe commande, paie, suit sa livraison</div>
+</div>
+<div class="actor-card">
+<div class="emoji">👨‍🍳</div>
+<div class="name">Cuisinier</div>
+<div class="desc">Prepare les plats, marque comme pret</div>
+</div>
+<div class="actor-card">
+<div class="emoji">🛵</div>
+<div class="name">Livreur</div>
+<div class="desc">Recupere et livre les commandes</div>
+</div>
+</div>
+<h3>📝 Mission</h3>
+<div class="code-box">
+<span class="comment">// Mission : Modeliser le systeme de commande BistroTech</span>
+<span class="comment">// 1. CLASSES : Client, Commande, Plat, Restaurant, Livraison...</span>
+<span class="comment">// 2. CAS D UTILISATION : Passer commande, Payer, Preparer, Livrer...</span>
+<span class="comment">// 3. SEQUENCE : Client -> Systeme -> Cuisinier -> Livreur</span>
+</div>
+<button class="toggle-sol" onclick="toggleAnswer('sol1')">Voir le corrige guide</button>
+<div id="sol1" class="solution-box">
+<h3 style="color:#22c55e;margin-bottom:10px;">✅ Corrige Guide - BistroTech</h3>
+<h3>Classes principales :</h3>
+<div class="code-box">
+<span class="class-name">Client</span> { id, nom, telephone, adresse, email }
+<span class="class-name">Restaurant</span> { id, nom, adresse, telephone }
+<span class="class-name">Plat</span> { id, nom, description, prix, categorie }
+<span class="class-name">Commande</span> { id, date, statut, montantTotal, adresseLivraison }
+<span class="class-name">LigneCommande</span> { quantite, prixUnitaire }
+<span class="class-name">Livraison</span> { id, dateDepart, dateArrivee, statut }
+<span class="class-name">Livreur</span> { id, nom, telephone, vehicule }
+
+<span class="comment">// Relations :</span>
+<span class="comment">// Client 1 --- * Commande</span>
+<span class="comment">// Restaurant 1 --- * Plat</span>
+<span class="comment">// Commande 1 --- * LigneCommande * --- 1 Plat</span>
+<span class="comment">// Commande 1 --- 0..1 Livraison</span>
+<span class="comment">// Livreur 1 --- * Livraison</span>
+</div>
+<h3>Cas d Utilisation :</h3>
+<div class="code-box">
+Acteurs : Client, Cuisinier, Livreur, Admin
+
+- <span class="keyword">Passer commande</span> (Client)
+- <span class="keyword">Payer en ligne</span> (Client)
+- <span class="keyword">Consulter menu</span> (Client)
+- <span class="keyword">Suivre commande</span> (Client)
+- <span class="keyword">Preparer commande</span> (Cuisinier)
+- <span class="keyword">Marquer pret</span> (Cuisinier)
+- <span class="keyword">Prendre livraison</span> (Livreur)
+- <span class="keyword">Livrer commande</span> (Livreur)
+- <span class="keyword">Gerer menu</span> (Admin)
+- <span class="keyword">Voir statistiques</span> (Admin)
+</div>
+<h3>Sequence (Passer une commande) :</h3>
+<div class="code-box">
+Client -> Interface : consulterMenu()
+Interface -> Systeme : getPlatsDisponibles()
+Systeme -> Interface : listePlats
+Client -> Interface : ajouterAuPanier(plat, qte)
+Client -> Interface : validerCommande()
+Interface -> Systeme : creerCommande(client, lignes)
+Systeme -> Commande : new Commande()
+Systeme -> Paiement : traiterPaiement(montant)
+Paiement -> Systeme : paiementOK
+Systeme -> Cuisinier : notifierNouvelleCommande()
+Systeme -> Client : confirmerCommande(numero)
+</div>
+</div>
+</div>
+<div class="slide-number">3 / 14</div>
+</div>
+
+<div class="slide" id="slide4">
+<div class="card">
+<div class="company-header">
+<div class="company-icon">📚</div>
+<div>
+<div class="company-name">LibraNova</div>
+<div class="company-sector">Bibliotheque municipale - Culture & Education</div>
+</div>
+</div>
+<div class="scenario-box">
+<h3>🎭 Ton role : Analyste-Programmeur</h3>
+<p>Tu es embauche(e) par la <strong>bibliotheque municipale LibraNova</strong>. Ils gerent 50 000 livres avec un systeme papier des annees 80. Le maire veut moderniser : reservation en ligne, rappels automatiques, statistiques de frequentation.</p>
+</div>
+<h3>📋 Le probleme</h3>
+<ul style="margin:10px 0 10px 25px;">
+<li>Les cartes d adherent sont sur papier, facilement perdues</li>
+<li>Impossible de reserver un livre a l avance</li>
+<li>Les retards ne sont pas suivis (pertes financieres)</li>
+<li>Le bibliothecaire ne sait pas quels livres sont populaires</li>
+<li>Les usagers doivent venir physiquement pour verifier la dispo</li>
+</ul>
+<h3>🎯 Livrables attendus</h3>
+<div>
+<span class="deliverable-tag">Diagramme de Classes</span>
+<span class="deliverable-tag">Cas d Utilisation</span>
+<span class="deliverable-tag">Diagramme de Sequence</span>
+</div>
+<h3>👥 Acteurs identifies</h3>
+<div class="grid-3">
+<div class="actor-card">
+<div class="emoji">📖</div>
+<div class="name">Adherent</div>
+<div class="desc">Emprunte, reserve, consulte le catalogue</div>
+</div>
+<div class="actor-card">
+<div class="emoji">👩‍💼</div>
+<div class="name">Bibliothecaire</div>
+<div class="desc">Gere les livres, valide les emprunts</div>
+</div>
+<div class="actor-card">
+<div class="emoji">📧</div>
+<div class="name">Systeme Notif</div>
+<div class="desc">Envoie rappels automatiques</div>
+</div>
+</div>
+<h3>📝 Mission</h3>
+<div class="code-box">
+<span class="comment">// Mission : Moderniser la gestion de LibraNova</span>
+<span class="comment">// 1. CLASSES : Adherent, Livre, Exemplaire, Emprunt, Reservation...</span>
+<span class="comment">//    Attention : un Livre peut avoir plusieurs Exemplaires !</span>
+<span class="comment">// 2. CAS D UTILISATION : Emprunter, Reserver, Retourner, Renouveler...</span>
+<span class="comment">// 3. SEQUENCE : Adherent -> Catalogue -> Emprunt -> Notification</span>
+</div>
+<button class="toggle-sol" onclick="toggleAnswer('sol2')">Voir le corrige guide</button>
+<div id="sol2" class="solution-box">
+<h3 style="color:#22c55e;margin-bottom:10px;">✅ Corrige Guide - LibraNova</h3>
+<h3>Classes principales :</h3>
+<div class="code-box">
+<span class="class-name">Adherent</span> { id, nom, prenom, email, telephone, dateInscription, statut }
+<span class="class-name">Livre</span> { ISBN, titre, auteur, editeur, annee, genre, resume }
+<span class="class-name">Exemplaire</span> { id, etat, dateAchat, localisation }
+<span class="class-name">Emprunt</span> { id, dateEmprunt, dateRetourPrevu, dateRetourReel, statut }
+<span class="class-name">Reservation</span> { id, dateReservation, dateExpiration, statut }
+<span class="class-name">Bibliothecaire</span> { id, nom, email, role }
+
+<span class="comment">// Relations :</span>
+<span class="comment">// Livre 1 --- * Exemplaire</span>
+<span class="comment">// Adherent 1 --- * Emprunt * --- 1 Exemplaire</span>
+<span class="comment">// Adherent 1 --- * Reservation * --- 1 Livre</span>
+<span class="comment">// Bibliothecaire 1 --- * Emprunt (validation)</span>
+</div>
+<h3>Cas d Utilisation :</h3>
+<div class="code-box">
+Acteurs : Adherent, Bibliothecaire, Systeme
+
+- <span class="keyword">S inscrire</span> (Adherent)
+- <span class="keyword">Rechercher livre</span> (Adherent)
+- <span class="keyword">Reserver livre</span> (Adherent)
+- <span class="keyword">Emprunter exemplaire</span> (Adherent + Biblio)
+- <span class="keyword">Retourner exemplaire</span> (Adherent + Biblio)
+- <span class="keyword">Renouveler emprunt</span> (Adherent)
+- <span class="keyword">Consulter historique</span> (Adherent)
+- <span class="keyword">Gerer catalogue</span> (Bibliothecaire)
+- <span class="keyword">Envoyer rappel</span> (Systeme)
+- <span class="keyword">Generer statistiques</span> (Bibliothecaire)
+</div>
+<h3>Sequence (Reserver un livre) :</h3>
+<div class="code-box">
+Adherent -> Interface : rechercher("Harry Potter")
+Interface -> Catalogue : findLivres("Harry Potter")
+Catalogue -> Interface : listeResultats
+Adherent -> Interface : selectionnerLivre(ISBN)
+Interface -> Systeme : verifierDisponibilite(ISBN)
+Systeme -> Exemplaire : countDisponibles(ISBN)
+Exemplaire -> Systeme : nb = 0
+Systeme -> Interface : indisponible
+Adherent -> Interface : reserver(ISBN)
+Interface -> Systeme : creerReservation(adherent, ISBN)
+Systeme -> Reservation : new Reservation()
+Systeme -> Adherent : confirmerReservation()
+Systeme -> FileAttente : ajouter(reservation)
+</div>
+</div>
+</div>
+<div class="slide-number">4 / 14</div>
+</div>
+
+<div class="slide" id="slide5">
+<div class="card">
+<div class="company-header">
+<div class="company-icon">🛒</div>
+<div>
+<div class="company-name">ShopExpress</div>
+<div class="company-sector">Plateforme e-commerce - Vente en ligne</div>
+</div>
+</div>
+<div class="scenario-box">
+<h3>🎭 Ton role : Architecte Logiciel Junior</h3>
+<p><strong>ShopExpress</strong> est une startup e-commerce en pleine croissance. Leur MVP fonctionne mais ne gere pas les retours, les avis clients, ni le systeme de fidelite. Le CEO veut un systeme scalable.</p>
+</div>
+<h3>📋 Le probleme</h3>
+<ul style="margin:10px 0 10px 25px;">
+<li>Les clients ne peuvent pas suivre leur commande en temps reel</li>
+<li>Pas de systeme de retour : le SAV est surcharge</li>
+<li>Impossible de laisser des avis sur les produits</li>
+<li>Pas de programme de fidelite : perte de clients</li>
+<li>Le vendeur ne voit pas ses statistiques de vente</li>
+</ul>
+<h3>🎯 Livrables attendus</h3>
+<div>
+<span class="deliverable-tag">Diagramme de Classes</span>
+<span class="deliverable-tag">Cas d Utilisation</span>
+<span class="deliverable-tag">Diagramme de Sequence</span>
+</div>
+<h3>👥 Acteurs identifies</h3>
+<div class="grid-3">
+<div class="actor-card">
+<div class="emoji">🛍️</div>
+<div class="name">Client</div>
+<div class="desc">Achete, evalue, suit ses commandes</div>
+</div>
+<div class="actor-card">
+<div class="emoji">🏪</div>
+<div class="name">Vendeur</div>
+<div class="desc">Publie produits, gere stock, voit stats</div>
+</div>
+<div class="actor-card">
+<div class="emoji">🤖</div>
+<div class="name">Systeme Paiement</div>
+<div class="desc">Traite les paiements securises</div>
+</div>
+</div>
+<h3>📝 Mission</h3>
+<div class="code-box">
+<span class="comment">// Mission : Concevoir la V2 de ShopExpress</span>
+<span class="comment">// 1. CLASSES : Client, Vendeur, Produit, Commande, Panier, Avis...</span>
+<span class="comment">//    Fidelite : Points, Niveaux, Recompenses ?</span>
+<span class="comment">//    Retour : Demande, Validation, Remboursement ?</span>
+<span class="comment">// 2. CAS D UTILISATION : Noter produit, Demander retour, Fidelite...</span>
+<span class="comment">// 3. SEQUENCE : Du panier jusqu a la livraison avec suivi</span>
+</div>
+<button class="toggle-sol" onclick="toggleAnswer('sol3')">Voir le corrige guide</button>
+<div id="sol3" class="solution-box">
+<h3 style="color:#22c55e;margin-bottom:10px;">✅ Corrige Guide - ShopExpress</h3>
+<h3>Classes principales :</h3>
+<div class="code-box">
+<span class="class-name">Client</span> { id, nom, email, adresse, telephone, dateInscription }
+<span class="class-name">Vendeur</span> { id, nomBoutique, email, siret, noteMoyenne }
+<span class="class-name">Produit</span> { id, nom, description, prix, stock, categorie, images }
+<span class="class-name">Panier</span> { id, dateCreation, montantTotal }
+<span class="class-name">LignePanier</span> { quantite }
+<span class="class-name">Commande</span> { id, numero, date, statut, montantTotal, adresseLivraison }
+<span class="class-name">LigneCommande</span> { quantite, prixUnitaire }
+<span class="class-name">Avis</span> { id, note, commentaire, date, verified }
+<span class="class-name">Retour</span> { id, motif, statut, dateDemande, dateResolution }
+<span class="class-name">ProgrammeFidelite</span> { id, points, niveau, dateDerniereActivite }
+
+<span class="comment">// Relations :</span>
+<span class="comment">// Vendeur 1 --- * Produit</span>
+<span class="comment">// Client 1 --- 1 Panier</span>
+<span class="comment">// Panier 1 --- * LignePanier * --- 1 Produit</span>
+<span class="comment">// Client 1 --- * Commande</span>
+<span class="comment">// Commande 1 --- * LigneCommande * --- 1 Produit</span>
+<span class="comment">// Client 1 --- * Avis * --- 1 Produit</span>
+<span class="comment">// Commande 1 --- 0..1 Retour</span>
+<span class="comment">// Client 1 --- 1 ProgrammeFidelite</span>
+</div>
+<h3>Cas d Utilisation :</h3>
+<div class="code-box">
+Acteurs : Client, Vendeur, SystemePaiement
+
+<span class="comment">// Client</span>
+- <span class="keyword">Rechercher produit</span>
+- <span class="keyword">Ajouter au panier</span>
+- <span class="keyword">Passer commande</span>
+- <span class="keyword">Payer</span>
+- <span class="keyword">Suivre commande</span>
+- <span class="keyword">Laisser avis</span>
+- <span class="keyword">Demander retour</span>
+- <span class="keyword">Consulter fidelite</span>
+
+<span class="comment">// Vendeur</span>
+- <span class="keyword">Ajouter produit</span>
+- <span class="keyword">Gerer stock</span>
+- <span class="keyword">Voir statistiques</span>
+- <span class="keyword">Traiter retour</span>
+- <span class="keyword">Repondre avis</span>
+</div>
+<h3>Sequence (Processus d achat complet) :</h3>
+<div class="code-box">
+Client -> Interface : ajouterPanier(produit, qte)
+Interface -> Panier : ajouterLigne(produit, qte)
+Panier -> Interface : panierMisAJour
+
+Client -> Interface : validerCommande()
+Interface -> Commande : creerCommande(client, panier)
+Commande -> SystemePaiement : initierPaiement(montant)
+SystemePaiement -> Commande : paiementAccepte
+Commande -> Stock : verifierDisponibilite()
+Stock -> Commande : stockOK
+Commande -> Client : confirmerCommande(numero)
+Commande -> Vendeur : notifierNouvelleCommande()
+
+Vendeur -> Commande : marquerExpediee()
+Commande -> Client : notifierExpedition(trackNumber)
+
+Client -> Interface : laisserAvis(commande, note, commentaire)
+Interface -> Avis : creerAvis(client, produit, note, commentaire)
+Avis -> Vendeur : notifierNouvelAvis()
+</div>
+</div>
+</div>
+<div class="slide-number">5 / 14</div>
+</div>
+
+<div class="slide" id="slide6">
+<div class="card">
+<div class="company-header">
+<div class="company-icon">👔</div>
+<div>
+<div class="company-name">RH Pro</div>
+<div class="company-sector">Cabinet de recrutement - Ressources Humaines</div>
+</div>
+</div>
+<div class="scenario-box">
+<h3>🎭 Ton role : Consultant en Systemes d Information</h3>
+<p><strong>RH Pro</strong> est un cabinet de recrutement qui gere des centaines de candidatures par mois. Tout est gere via Excel et emails. Le DRH veut un systeme pour automatiser le suivi des candidats, les entretiens, et les offres d emploi.</p>
+</div>
+<h3>📋 Le probleme</h3>
+<ul style="margin:10px 0 10px 25px;">
+<li>Les CV sont perdus dans les emails</li>
+<li>Impossible de savoir ou en est un candidat dans le processus</li>
+<li>Les recruteurs se marchent dessus sur les memes profils</li>
+<li>Pas de suivi des entretiens passes</li>
+<li>Les clients (entreprises) n ont pas de visibilite sur les candidats proposes</li>
+</ul>
+<h3>🎯 Livrables attendus</h3>
+<div>
+<span class="deliverable-tag">Diagramme de Classes</span>
+<span class="deliverable-tag">Cas d Utilisation</span>
+<span class="deliverable-tag">Diagramme de Sequence</span>
+</div>
+<h3>👥 Acteurs identifies</h3>
+<div class="grid-3">
+<div class="actor-card">
+<div class="emoji">👤</div>
+<div class="name">Candidat</div>
+<div class="desc">Postule, suit sa candidature</div>
+</div>
+<div class="actor-card">
+<div class="emoji">🕵️</div>
+<div class="name">Recruteur</div>
+<div class="desc">Publie offres, evalue candidats</div>
+</div>
+<div class="actor-card">
+<div class="emoji">🏢</div>
+<div class="name">Client (Entreprise)</div>
+<div class="desc">Publie besoins, recoit candidats</div>
+</div>
+</div>
+<h3>📝 Mission</h3>
+<div class="code-box">
+<span class="comment">// Mission : Automatiser le recrutement chez RH Pro</span>
+<span class="comment">// 1. CLASSES : Candidat, Offre, Candidature, Entretien, Recruteur, Client...</span>
+<span class="comment">//    Un Candidat peut postuler a plusieurs Offres !</span>
+<span class="comment">//    Un Entretien lie un Candidat, un Recruteur et une Offre</span>
+<span class="comment">// 2. CAS D UTILISATION : Deposer CV, Programmer entretien, Noter candidat...</span>
+<span class="comment">// 3. SEQUENCE : Publication -> Candidature -> Entretien -> Decision</span>
+</div>
+<button class="toggle-sol" onclick="toggleAnswer('sol4')">Voir le corrige guide</button>
+<div id="sol4" class="solution-box">
+<h3 style="color:#22c55e;margin-bottom:10px;">✅ Corrige Guide - RH Pro</h3>
+<h3>Classes principales :</h3>
+<div class="code-box">
+<span class="class-name">Candidat</span> { id, nom, prenom, email, telephone, cvPath, competences[], disponibilite }
+<span class="class-name">Recruteur</span> { id, nom, specialite, rpps, telephone }
+<span class="class-name">Client</span> { id, nomEntreprise, secteur, taille, contactEmail }
+<span class="class-name">Offre</span> { id, titre, description, salaire, localisation, datePublication, statut }
+<span class="class-name">Candidature</span> { id, datePostulation, statut, lettreMotivation }
+<span class="class-name">Entretien</span> { id, date, heure, type, lieu, statut, notes }
+<span class="class-name">Evaluation</span> { id, noteTechnique, noteComportementale, commentaire, date }
+
+<span class="comment">// Relations :</span>
+<span class="comment">// Client 1 --- * Offre</span>
+<span class="comment">// Recruteur 1 --- * Offre (gestion)</span>
+<span class="comment">// Candidat 1 --- * Candidature * --- 1 Offre</span>
+<span class="comment">// Candidature 1 --- * Entretien</span>
+<span class="comment">// Entretien 1 --- 1 Evaluation</span>
+<span class="comment">// Recruteur 1 --- * Evaluation</span>
+</div>
+<h3>Cas d Utilisation :</h3>
+<div class="code-box">
+Acteurs : Candidat, Recruteur, Client
+
+<span class="comment">// Candidat</span>
+- <span class="keyword">Creer profil</span>
+- <span class="keyword">Deposer CV</span>
+- <span class="keyword">Rechercher offre</span>
+- <span class="keyword">Postuler</span>
+- <span class="keyword">Suivre candidature</span>
+- <span class="keyword">Disponibilite entretien</span>
+
+<span class="comment">// Recruteur</span>
+- <span class="keyword">Publier offre</span>
+- <span class="keyword">Consulter candidatures</span>
+- <span class="keyword">Programmer entretien</span>
+- <span class="keyword">Evaluer candidat</span>
+- <span class="keyword">Notifier decision</span>
+- <span class="keyword">Generer rapport</span>
+
+<span class="comment">// Client</span>
+- <span class="keyword">Publier besoin</span>
+- <span class="keyword">Consulter candidats proposes</span>
+- <span class="keyword">Valider recrutement</span>
+</div>
+<h3>Sequence (Processus de candidature) :</h3>
+<div class="code-box">
+Client -> Recruteur : soumettreBesoin(poste, profil, salaire)
+Recruteur -> Offre : creerOffre(client, details)
+Offre -> Systeme : publier()
+
+Candidat -> Interface : rechercherOffres("Developpeur Java")
+Interface -> Offre : findByCompetences("Java")
+Offre -> Interface : listeOffres
+Candidat -> Interface : postuler(offreId, cv, lettre)
+Interface -> Candidature : creer(candidat, offre, documents)
+Candidature -> Recruteur : notifierNouvelleCandidature()
+
+Recruteur -> Candidature : consulter()
+Recruteur -> Entretien : programmer(candidature, date, type)
+Entretien -> Candidat : envoyerInvitation()
+
+Candidat -> Entretien : confirmerPresence()
+Recruteur -> Evaluation : creer(entretien, notes)
+Evaluation -> Candidature : mettreAJourStatut("En evaluation")
+Recruteur -> Candidature : notifierDecision("Retenu")
+Candidature -> Candidat : envoyerResultat("Felicitation !")
+</div>
+</div>
+</div>
+<div class="slide-number">6 / 14</div>
+</div>
+
+<div class="slide" id="slide7">
+<div class="card">
+<div class="company-header">
+<div class="company-icon">🏥</div>
+<div>
+<div class="company-name">MediCare Digital</div>
+<div class="company-sector">Hopital prive - Sante</div>
+</div>
+</div>
+<div class="scenario-box">
+<h3>🎭 Ton role : Ingenieur Systeme Medical</h3>
+<p>L <strong>Hopital Saint-Joseph</strong> (partenaire MediCare) veut digitaliser la gestion des patients, des rendez-vous, et des dossiers medicaux. Le systeme actuel est sur papier et non securise. La CNIL exige la conformite RGPD.</p>
+</div>
+<h3>📋 Le probleme</h3>
+<ul style="margin:10px 0 10px 25px;">
+<li>Les dossiers medicaux papier sont accessibles a tout le monde</li>
+<li>Les rendez-vous se perdent, les patients attendent des heures</li>
+<li>Impossible de suivre l historique medical d un patient</li>
+<li>Les medecins ne sont pas alertes des allergies</li>
+<li>La facturation est manuelle et source d erreurs</li>
+</ul>
+<h3>🎯 Livrables attendus</h3>
+<div>
+<span class="deliverable-tag">Diagramme de Classes</span>
+<span class="deliverable-tag">Cas d Utilisation</span>
+<span class="deliverable-tag">Diagramme de Sequence</span>
+</div>
+<h3>👥 Acteurs identifies</h3>
+<div class="grid-3">
+<div class="actor-card">
+<div class="emoji">🧑‍⚕️</div>
+<div class="name">Medecin</div>
+<div class="desc">Consulte, prescrit, accede au dossier</div>
+</div>
+<div class="actor-card">
+<div class="emoji">👩‍⚕️</div>
+<div class="name">Infirmier(ere)</div>
+<div class="desc">Prend constantes, administre soins</div>
+</div>
+<div class="actor-card">
+<div class="emoji">🧑‍💼</div>
+<div class="name">Secretaire</div>
+<div class="desc">Prend RDV, gere admissions, facture</div>
+</div>
+</div>
+<h3>📝 Mission</h3>
+<div class="code-box">
+<span class="comment">// Mission : Digitaliser l hopital Saint-Joseph</span>
+<span class="comment">// CONTRAINTE RGPD : Donnees medicales = tres sensibles !</span>
+<span class="comment">// 1. CLASSES : Patient, Medecin, DossierMedical, Consultation...</span>
+<span class="comment">//    DossierMedical doit etre securise (acces controle)</span>
+<span class="comment">// 2. CAS D UTILISATION : Prendre RDV, Consulter dossier, Prescrire...</span>
+<span class="comment">// 3. SEQUENCE : Arrivee -> Accueil -> Consultation -> Ordonnance -> Facturation</span>
+</div>
+<button class="toggle-sol" onclick="toggleAnswer('sol5')">Voir le corrige guide</button>
+<div id="sol5" class="solution-box">
+<h3 style="color:#22c55e;margin-bottom:10px;">✅ Corrige Guide - MediCare Digital</h3>
+<h3>Classes principales :</h3>
+<div class="code-box">
+<span class="class-name">Patient</span> { id, nom, prenom, dateNaissance, sexe, telephone, email, numeroSecu }
+<span class="class-name">Medecin</span> { id, nom, specialite, rpps, telephone, email }
+<span class="class-name">Infirmier</span> { id, nom, service, telephone }
+<span class="class-name">Secretaire</span> { id, nom, telephone, email }
+<span class="class-name">DossierMedical</span> { id, numeroDossier, dateCreation, groupeSanguin, allergies[], antecedents[] }
+<span class="class-name">Consultation</span> { id, date, motif, diagnostic, notes, statut }
+<span class="class-name">Ordonnance</span> { id, date, medicaments[], duree, renouvelable }
+<span class="class-name">RendezVous</span> { id, date, heure, motif, statut, salle }
+<span class="class-name">Facture</span> { id, numero, date, montant, statutPaiement }
+<span class="class-name">LigneFacture</span> { libelle, montant, codeAMO }
+
+<span class="comment">// Relations :</span>
+<span class="comment">// Patient 1 --- 1 DossierMedical</span>
+<span class="comment">// Patient 1 --- * RendezVous</span>
+<span class="comment">// Medecin 1 --- * RendezVous</span>
+<span class="comment">// Patient 1 --- * Consultation * --- 1 Medecin</span>
+<span class="comment">// Consultation 1 --- 0..1 Ordonnance</span>
+<span class="comment">// Consultation 1 --- 1 Facture</span>
+<span class="comment">// Facture 1 --- * LigneFacture</span>
+</div>
+<h3>Cas d Utilisation :</h3>
+<div class="code-box">
+Acteurs : Patient, Medecin, Infirmier, Secretaire
+
+<span class="comment">// Patient</span>
+- <span class="keyword">Prendre rendez-vous</span>
+- <span class="keyword">Consulter dossier (partiel)</span>
+- <span class="keyword">Voir ordonnances</span>
+- <span class="keyword">Payer facture</span>
+
+<span class="comment">// Secretaire</span>
+- <span class="keyword">Enregistrer patient</span>
+- <span class="keyword">Planifier rendez-vous</span>
+- <span class="keyword">Gerer admissions</span>
+- <span class="keyword">Editer facture</span>
+- <span class="keyword">Annuler/modifier RDV</span>
+
+<span class="comment">// Medecin</span>
+- <span class="keyword">Consulter dossier medical</span>
+- <span class="keyword">Realiser consultation</span>
+- <span class="keyword">Rediger ordonnance</span>
+- <span class="keyword">Demander analyse</span>
+- <span class="keyword">Voir historique patient</span>
+
+<span class="comment">// Infirmier</span>
+- <span class="keyword">Prendre constantes</span>
+- <span class="keyword">Administrer soins</span>
+- <span class="keyword">Noter observations</span>
+</div>
+<h3>Sequence (Consultation complete) :</h3>
+<div class="code-box">
+Patient -> Secretaire : arrivee(rdvNumero)
+Secretaire -> RendezVous : confirmerPresence()
+Secretaire -> Patient : donnerSalle(attente)
+
+Infirmier -> Patient : appeler()
+Infirmier -> DossierMedical : prendreConstantes(poids, tension, temperature)
+Infirmier -> DossierMedical : noterObservations("Patient stable")
+Infirmier -> Patient : accompagnerSalleConsultation()
+
+Medecin -> DossierMedical : consulter(patientId)
+DossierMedical -> Medecin : afficherHistorique()
+Medecin -> Patient : poserQuestions(motif)
+Medecin -> Consultation : creer(patient, date, motif)
+Medecin -> Consultation : redigerDiagnostic("Grippe saisonniere")
+
+Medecin -> Ordonnance : creer(consultation)
+Medecin -> Ordonnance : ajouterMedicament("Doliprane", "3x/jour", "5j")
+Ordonnance -> Patient : imprimer()
+
+Consultation -> Facture : generer(consultation, tarifs)
+Facture -> Secretaire : transmettre()
+Secretaire -> Patient : presenterFacture(montant)
+Patient -> Secretaire : payer(carteBancaire)
+Secretaire -> Facture : marquerPaye()
+</div>
+</div>
+</div>
+<div class="slide-number">7 / 14</div>
+</div>
+
+<div class="slide" id="slide8">
+<div class="card">
+<h2>📊 Tableau Recapitulatif des 5 Projets</h2>
+<table>
+<tr>
+<th>Entreprise</th>
+<th>Secteur</th>
+<th>Ton role</th>
+<th>Probleme cle</th>
+<th>Complexite</th>
+</tr>
+<tr>
+<td>🍽️ BistroTech</td>
+<td>Restauration</td>
+<td>Dev Analyste</td>
+<td>Commandes en ligne</td>
+<td>⭐⭐</td>
+</tr>
+<tr>
+<td>📚 LibraNova</td>
+<td>Culture</td>
+<td>Analyste-Prog</td>
+<td>Gestion emprunts</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>🛒 ShopExpress</td>
+<td>E-commerce</td>
+<td>Archi Junior</td>
+<td>Scalabilite</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>👔 RH Pro</td>
+<td>Recrutement</td>
+<td>Consultant SI</td>
+<td>Suivi candidats</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td>🏥 MediCare</td>
+<td>Sante</td>
+<td>Ing. Medical</td>
+<td>Securite RGPD</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+</table>
+<div class="hint-box" style="margin-top:20px;">
+<strong>💡 Conseil pedagogique :</strong> Commence par <strong>BistroTech</strong> (le plus simple) et monte progressivement vers <strong>MediCare</strong> (le plus complexe avec contraintes RGPD).
+</div>
+</div>
+<div class="slide-number">8 / 14</div>
+</div>
+
+<div class="slide" id="slide9">
+<div class="card">
+<h2>🔧 Methodologie de Modelisation UML</h2>
+<h3>Etape 1 : Analyser le besoin</h3>
+<div class="code-box">
+<span class="comment">// Questions a se poser :</span>
+- Quel est le probleme metier ?
+- Qui sont les utilisateurs ? (Acteurs)
+- Quelles sont les donnees manipulees ? (Entites)
+- Quelles sont les regles metier ? (Contraintes)
+</div>
+<h3>Etape 2 : Identifier les Acteurs</h3>
+<div class="code-box">
+<span class="comment">// Types d acteurs :</span>
+- <span class="keyword">Acteur primaire</span> : Initie l interaction (Client, Patient)
+- <span class="keyword">Acteur secondaire</span> : Interagit en reponse (Systeme Paiement)
+- <span class="keyword">Acteur interne</span> : Employe utilisant le systeme (Cuisinier, Medecin)
+</div>
+<h3>Etape 3 : Diagramme de Cas d Utilisation</h3>
+<div class="code-box">
+<span class="comment">// Regles :</span>
+- Nommer au verbe a l infinitif
+- Un cas = une fonctionnalite atomique
+- Inclure les relations include et extend
+</div>
+<h3>Etape 4 : Diagramme de Classes</h3>
+<div class="code-box">
+<span class="comment">// Types de relations :</span>
+- <span class="keyword">Association</span> : A connait B (Client -- Commande)
+- <span class="keyword">Heritage</span> : A est un B (Client --|> Personne)
+- <span class="keyword">Composition</span> : A contient B, B ne vit pas sans A
+- <span class="keyword">Agregation</span> : A contient B, B peut exister seul
+</div>
+<h3>Etape 5 : Diagramme de Sequence</h3>
+<div class="code-box">
+<span class="comment">// Notation :</span>
+- Fleche pleine = message synchrone (appel bloquant)
+- Fleche ouverte = message asynchrone (callback)
+- Ligne pointillee = ligne de vie (retour)
+- Rectangle = activation (execution)
+</div>
+</div>
+<div class="slide-number">9 / 14</div>
+</div>
+
+<div class="slide" id="slide10">
+<div class="card">
+<h2>🎯 Astuces pour Reussir tes Diagrammes</h2>
+<div class="grid-2">
+<div class="scenario-box">
+<h3>✅ Les BONNES pratiques</h3>
+<ul style="margin:10px 0 10px 20px;font-size:0.9em;">
+<li>Commencer par les cas d utilisation</li>
+<li>Nommer les classes au singulier</li>
+<li>Utiliser des noms significatifs</li>
+<li>Verifier la coherence entre les 3 diagrammes</li>
+<li>Respecter les multiplicites</li>
+<li>Documenter les contraintes metier</li>
+<li>Tester avec un scenario concret</li>
+</ul>
+</div>
+<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:20px;">
+<h3 style="color:#ef4444;">❌ Les ERREURS a eviter</h3>
+<ul style="margin:10px 0 10px 20px;font-size:0.9em;">
+<li>Melanger classe et objet</li>
+<li>Oublier les acteurs secondaires</li>
+<li>Mettre des methodes dans les cas d utilisation</li>
+<li>Creer des classes "fourre-tout"</li>
+<li>Ignorer les contraintes metier</li>
+<li>Diagramme de sequence trop complexe</li>
+<li>Oublier les retours de messages</li>
+</ul>
+</div>
+</div>
+<h3>📐 Checklist avant de rendre</h3>
+<table>
+<tr>
+<th>Diagramme</th>
+<th>Questions de verification</th>
+</tr>
+<tr>
+<td><strong>Cas d Utilisation</strong></td>
+<td>Tous les acteurs ont-ils des cas ? Les noms sont-ils au verbe ? Les relations include/extend sont-elles justifiees ?</td>
+</tr>
+<tr>
+<td><strong>Classes</strong></td>
+<td>Les classes sont-elles au singulier ? Les attributs ont-ils des types ? Les multiplicites sont-elles correctes ?</td>
+</tr>
+<tr>
+<td><strong>Sequence</strong></td>
+<td>Les objets correspondent-ils aux classes ? Les messages ont-ils des retours ? Le scenario est-il realiste ?</td>
+</tr>
+</table>
+</div>
+<div class="slide-number">10 / 14</div>
+</div>
+
+<div class="slide" id="slide11">
+<div class="card">
+<h2>🛠️ Outils Recommandes</h2>
+<div class="grid-2">
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">🌐</div>
+<div>
+<div class="company-name">PlantUML</div>
+<div class="company-sector">Gratuit - Code-based</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Ecris ton diagramme en texte, il le genere automatiquement. Ideal pour les debutants.</p>
+<div class="code-box" style="font-size:0.75em;">
+@startuml
+class Client {
+  - id: int
+  - nom: String
+}
+class Commande {
+  - numero: String
+}
+Client "1" -- "*" Commande
+@enduml
+</div>
+</div>
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">🎨</div>
+<div>
+<div class="company-name">Draw.io / diagrams.net</div>
+<div class="company-sector">Gratuit - Drag & Drop</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Interface graphique intuitive. Tres complet pour tous les types de diagrammes UML.</p>
+</div>
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">⭐</div>
+<div>
+<div class="company-name">StarUML</div>
+<div class="company-sector">Payant - Professionnel</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Logiciel professionnel tres complet. Generation de code, reverse engineering.</p>
+</div>
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">🔷</div>
+<div>
+<div class="company-name">Visual Paradigm</div>
+<div class="company-sector">Freemium - Enterprise</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Solution enterprise avec collaboration en temps reel et gestion de projet integree.</p>
+</div>
+</div>
+</div>
+<div class="slide-number">11 / 14</div>
+</div>
+
+<div class="slide" id="slide12">
+<div class="card">
+<h2>📋 Exercice Final : Ton Propre Projet</h2>
+<div class="scenario-box">
+<h3>🎭 Mission : Cree ton propre mini-projet UML</h3>
+<p>Choisis un domaine qui te passionne et modelise-le completement en UML. Voici quelques idees :</p>
+</div>
+<div class="grid-2">
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">🎮</div>
+<div>
+<div class="company-name">GameZone</div>
+<div class="company-sector">Plateforme de jeux video</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Systeme de matchmaking, classements, tournois, achats in-game...</p>
+</div>
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">🚗</div>
+<div>
+<div class="company-name">AutoLoc</div>
+<div class="company-sector">Location de vehicules</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Reservation en ligne, gestion du parc auto, assurance, restitution...</p>
+</div>
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">🏠</div>
+<div>
+<div class="company-name">ImmoPro</div>
+<div class="company-sector">Agence immobiliere</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Gestion des biens, visites virtuelles, dossiers locataires, mandats...</p>
+</div>
+<div class="company-card">
+<div class="company-header">
+<div class="company-icon">📱</div>
+<div>
+<div class="company-name">SocialConnect</div>
+<div class="company-sector">Reseau social</div>
+</div>
+</div>
+<p style="font-size:0.9em;">Profils, publications, messagerie, groupes, notifications, moderation...</p>
+</div>
+</div>
+<div class="hint-box" style="margin-top:20px;">
+<strong>📌 Consignes :</strong><br>
+1. Redige un scenario de 10-15 lignes decrivant le probleme<br>
+2. Identifie 3-4 acteurs<br>
+3. Produis les 3 diagrammes UML (Classes, Cas d Utilisation, Sequence)<br>
+4. Presente ta solution a un camarade pour feedback
+</div>
+</div>
+<div class="slide-number">12 / 14</div>
+</div>
+
+<div class="slide" id="slide13">
+<div class="card">
+<h2>🏆 Grille d Evaluation</h2>
+<table>
+<tr>
+<th>Critere</th>
+<th>Points</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><strong>Comprehension du besoin</strong></td>
+<td>5 pts</td>
+<td>Le scenario est bien analyse, les acteurs sont pertinents</td>
+</tr>
+<tr>
+<td><strong>Diagramme de Classes</strong></td>
+<td>10 pts</td>
+<td>Classes coherentes, attributs types, relations correctes, multiplicites</td>
+</tr>
+<tr>
+<td><strong>Cas d Utilisation</strong></td>
+<td>10 pts</td>
+<td>Tous les acteurs couverts, noms au verbe, relations include/extend justifiees</td>
+</tr>
+<tr>
+<td><strong>Diagramme de Sequence</strong></td>
+<td>10 pts</td>
+<td>Scenario realiste, objets correspondant aux classes, retours presents</td>
+</tr>
+<tr>
+<td><strong>Coherence globale</strong></td>
+<td>5 pts</td>
+<td>Les 3 diagrammes sont coherents entre eux</td>
+</tr>
+<tr>
+<td><strong>Presentation</strong></td>
+<td>5 pts</td>
+<td>Clarte, lisibilite, respect des conventions UML</td>
+</tr>
+<tr>
+<td><strong>Bonus creativite</strong></td>
+<td>5 pts</td>
+<td>Ajout de contraintes metier, cas particuliers bien geres</td>
+</tr>
+</table>
+<div style="text-align:center;margin-top:20px;">
+<div style="font-size:2em;font-weight:bold;color:#00d4ff;">Total : 50 points</div>
+<div style="color:#888;margin-top:10px;">40-50 = Excellent | 30-39 = Bien | 20-29 = Passable | < 20 = A revoir</div>
+</div>
+</div>
+<div class="slide-number">13 / 14</div>
+</div>
+
+<div class="slide" id="slide14">
+<div class="card" style="text-align:center;">
+<div class="emoji">🎉</div>
+<h1 style="font-size:2.5em;">Bravo !</h1>
+<p class="subtitle" style="font-size:1.3em;">Tu es maintenant pret(e) a modeliser n importe quel systeme en UML</p>
+<div style="margin:30px 0;">
+<div class="hint-box" style="text-align:left;">
+<h3 style="margin:0 0 15px 0;">📚 Pour aller plus loin :</h3>
+<ul>
+<li>Pratique regulierement avec des cas reels</li>
+<li>Apprends les autres diagrammes UML (Etat, Activite, Composants...)</li>
+<li>Etudie les design patterns (MVC, Singleton, Factory...)</li>
+<li>Participe a des hackathons ou projets open-source</li>
+</ul>
+</div>
+</div>
+<p style="color:#888;margin-top:20px;">Bonne chance pour tes projets UML ! 🚀</p>
+<div style="margin-top:30px;">
+<a href="#slide1" class="btn">↺ Revoir depuis le debut</a>
+</div>
+</div>
+<div class="slide-number">14 / 14</div>
+</div>
+
+<div class="nav-dots">
+<div class="nav-dot active" onclick="scrollToSlide('slide1')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide2')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide3')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide4')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide5')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide6')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide7')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide8')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide9')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide10')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide11')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide12')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide13')"></div>
+<div class="nav-dot" onclick="scrollToSlide('slide14')"></div>
+</div>
+
+<script>
+function toggleAnswer(id) {
+    const ans = document.getElementById(id);
+    ans.classList.toggle('show');
+}
+function scrollToSlide(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.nav-dot');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const index = Array.from(slides).indexOf(entry.target);
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+    });
+}, { threshold: 0.5 });
+slides.forEach(slide => observer.observe(slide));
+document.addEventListener('keydown', (e) => {
+    const current = document.querySelector('.nav-dot.active');
+    const index = Array.from(dots).indexOf(current);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        if (index < dots.length - 1) scrollToSlide('slide' + (index + 2));
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        if (index > 0) scrollToSlide('slide' + index);
+    }
+});
+</script>
+</body>
+</html>
